@@ -19,3 +19,9 @@ python3 server.py
 
 ### Run client
 python3 client.py
+## ⚠️ Setup Note
+This project is designed and tested in a local environment using virtual machines.
+
+To run this project effectively, you may need to modify certain configurations such as IP addresses and network settings based on your system setup.
+
+For best results, it is recommended to use a controlled environment (e.g., VirtualBox or similar) to simulate network interactions.
