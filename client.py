@@ -1,25 +1,22 @@
+"""Send one sample authentication attempt to the local demo service."""
+
+import argparse
 import socket
-import random
 
-usernames = ["admin", "root", "user",  "guest","test" ,"dhruv99999"]
 
-passwords = ["123456", "password", "admin123", "letmein", "welcome","password5665","mutthmaare"]
-client = socket.socket()
-#connect to server
-client.connect(("127.0.0.1", 12348))
+def main() -> None:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--host", default="127.0.0.1")
+    parser.add_argument("--port", type=int, default=12348)
+    args = parser.parse_args()
+    with socket.create_connection((args.host, args.port), timeout=5) as client:
+        client.settimeout(5)
+        print(client.recv(1024).decode("utf-8", errors="replace"), end="")
+        client.sendall(b"admin\n")
+        print(client.recv(1024).decode("utf-8", errors="replace"), end="")
+        client.sendall(b"example-password\n")
+        print(client.recv(1024).decode("utf-8", errors="replace"), end="")
 
-#receive message
-print(client.recv(1024).decode())
-#send username
-username = random.choice(usernames)
-client.send((username + "\n").encode())
-#receive password prompt
-print(client.recv(1024).decode())
-#send password
-password = random.choice(passwords)
-client.send((password + "\n").encode())
 
-#receive server response
-print(client.recv(1024).decode())
-
-client.close()
+if __name__ == "__main__":
+    main()
